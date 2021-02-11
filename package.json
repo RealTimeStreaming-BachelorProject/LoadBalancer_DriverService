@@ -4,10 +4,14 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "@types/http-proxy": "^1.17.5",
     "@types/node": "^14.14.25",
+    "http-proxy": "^1.18.1",
     "nodemon": "^2.0.7",
+    "socket.io": "^3.1.1",
     "ts-node": "^9.1.1",
-    "typescript": "^4.1.5"
+    "typescript": "^4.1.5",
+    "ws": "^7.4.3"
   },
   "devDependencies": {},
   "scripts": {
