@@ -1,23 +1,21 @@
 import * as http from 'http'
 import { enableCors } from './util/cors';
+import { findDriverServiceURL } from './util/driverService';
 const PORT = 5002;
 
-// const proxy = httpProxy.createProxyServer({target:'http://localhost:5001'})
-// proxy.on("proxyRes", (proxyReq, req, res) => {
-//     console.log("Request")
-// })
-// proxy.listen(PORT);
-
-http.createServer((req, res) => {
+/**
+ * This function will respond to any request to the server.
+ * It responds with a JSON object like {url: "http:/..."} which
+ * points a DriverService server.
+ */
+const handleRequests = (req: http.IncomingMessage, res: http.ServerResponse) => {
     enableCors(res);
-    const driverServiceURLs = ["http://localhost:5001"]
-    const path = req.url;
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
-    const newUrl = driverServiceURLs[0] + path;
-    res.write(JSON.stringify({url: newUrl}))
-    // res.writeHead(302, {
-    //     'Location': driverServiceURL + path
-    // })
+    const url = findDriverServiceURL(req);
+    res.write(JSON.stringify({url}))
     res.end();
-}).listen(PORT);
+}
+
+http.createServer(handleRequests).listen(PORT);
+
