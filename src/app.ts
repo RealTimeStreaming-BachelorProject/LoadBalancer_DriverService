@@ -8,6 +8,7 @@ import {
 
 const PORT = 5010;
 app.use(cors());
+app.use(express.json());
 
 /**
  * This function will respond to any request to the server.
@@ -16,10 +17,14 @@ app.use(cors());
  */
 app.get("/", (req, res) => {
   const url = findDriverServiceURL(req);
-  res.write(JSON.stringify({ url }));
+  if (url) {
+    res.json(JSON.stringify({ url }));
+  } else {
+    res.status(404).json("No DriverService found");
+  }
 });
 
-app.get("/register", (req, res) => {
+app.post("/register", (req, res) => {
   const { url } = req.body;
   registerDriverService(url);
   res.json("Ok");
