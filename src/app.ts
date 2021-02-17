@@ -1,21 +1,30 @@
-import * as http from 'http'
-import { enableCors } from './util/cors';
-import { findDriverServiceURL } from './util/driverService';
-const PORT = 5002;
+import * as express from "express";
+import * as cors from "cors";
+const app = express();
+import {
+  findDriverServiceURL,
+  registerDriverService,
+} from "./util/driverService";
+
+const PORT = 5010;
+app.use(cors());
 
 /**
  * This function will respond to any request to the server.
  * It responds with a JSON object like {url: "http:/..."} which
  * points a DriverService server.
  */
-const handleRequests = (req: http.IncomingMessage, res: http.ServerResponse) => {
-    enableCors(res);
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    const url = findDriverServiceURL(req);
-    res.write(JSON.stringify({url}))
-    res.end();
-}
+app.get("/", (req, res) => {
+  const url = findDriverServiceURL(req);
+  res.write(JSON.stringify({ url }));
+});
 
-http.createServer(handleRequests).listen(PORT);
+app.get("/register", (req, res) => {
+  const { url } = req.body;
+  registerDriverService(url);
+  res.json("Ok");
+});
 
+app.listen(PORT, () => {
+  console.log(`👮🏻‍♂️ Coordinator Service is running on port ${PORT}`);
+});
