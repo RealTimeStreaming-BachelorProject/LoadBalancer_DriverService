@@ -25,7 +25,9 @@ app.get("/", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  const { url } = req.body;
+  const { port } = req.body;
+  const { protocol, hostname } = req;
+  const url = protocol + "://" + hostname + ":" + port;
   registerDriverService(url);
   res.json("Ok");
 });
