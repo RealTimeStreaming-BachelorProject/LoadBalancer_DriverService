@@ -2,27 +2,31 @@ import * as express from "express";
 import * as http from "http";
 import * as httpProxy from "http-proxy";
 import * as cors from "cors";
+import { getService, registerservice } from "./util/serviceRegistration";
 
 const PORT = 5010;
 
-const targets = [
-  {
-    host: "localhost",
-    port: 5002,
-  },
-];
 
+const app = express();
+app.use(cors());
+app.use(express.json())
 const proxy = httpProxy.createProxyServer();
-const proxyServer = http.createServer((req, res) => proxy.web(req, res));
+const proxyServer = http.createServer(express);
 let target = {};
 
-const getRandomTarget = () => {
-  const randomTarget = targets[Math.floor(Math.random() * targets.length)];
-  return randomTarget;
-};
+app.post("/register-service", (req, res) => {
+  const { port } = req.body;
+  const { hostname } = req;
+  registerservice({hostname, port});
+  res.json("Ok");
+})
+
+app.get("*", (req, res) => {
+  proxy.web(req, res)
+})
 
 proxyServer.on("upgrade", (req, socket, head) => {
-  target = getRandomTarget();
+  target = getService.random();
   proxy.ws(req, socket, head, {
     target,
   });
@@ -34,18 +38,9 @@ process.on("uncaughtException", (error) => {
     }
 })
 
+
+
+app.listen(PORT, () => console.log("Server is up"))
+
 proxyServer.listen(PORT);
-
-// app.get("/register-service", (req, res) => {
-//     res.send("REGISTER SERVICE")
-// })
-
-// app.get("*", (req, res) => {
-//     console.log(`Request to ${req.headers}`)
-//     const randomTarget = targets[Math.floor(Math.random() * targets.length)];
-//     proxyServer.web(req, res, {
-//       target: randomTarget,
-//     });
-// })
-
 // app.listen(PORT, () => console.log("Server started"))
