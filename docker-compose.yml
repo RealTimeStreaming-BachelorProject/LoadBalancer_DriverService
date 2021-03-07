@@ -3,5 +3,5 @@ version: '3'
 services:
   loadbalancer:
     build: .
-  ports:
-    - 5010:5010
+    ports:
+      - 5010:5010
