@@ -47,6 +47,7 @@ server.on("upgrade", (req, socket, head) => {
   proxy.web(req, socket, head);
 
   proxy.on("error", function (err, req, socket) {
+    console.log(err)
     console.log("Socket upgrade error");
     socket.end();
   });
