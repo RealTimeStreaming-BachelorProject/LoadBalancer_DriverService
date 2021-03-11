@@ -16,7 +16,7 @@ export const proxies: any[] = [
   httpProxy.createProxyServer({
     target: {
       host: "10.123.252.246",
-      port: 5002
+      port: 5001
     },
     ws: true,
     xfwd: true,
