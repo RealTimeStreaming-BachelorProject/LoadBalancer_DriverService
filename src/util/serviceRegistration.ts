@@ -12,7 +12,16 @@ export const services: Service[] = [
   },
 ];
 
-export const proxies: any[] = [];
+export const proxies: any[] = [
+  httpProxy.createProxyServer({
+    target: {
+      host: "10.123.252.246",
+      port: 5002
+    },
+    ws: true,
+    xfwd: true,
+  }),
+];
 
 export const getService = {
   random: () => {

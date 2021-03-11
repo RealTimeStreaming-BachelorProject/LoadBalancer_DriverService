@@ -10,25 +10,27 @@ const app = express();
 app.use(cors());
 app.use(express.json())
 
-const proxyServer = http.createServer(express);
-let target = {};
-
-// REGISTER SERVICE
-app.post("/register-service", (req, res) => {
-  const { port } = req.body;
-  const { hostname } = req;
-  registerservice({host: hostname, port: 5002});
-  res.json("Ok");
-})  
-
-// PROXY WEBSOCKET
-app.get("*", (req, res) => {
+const server = http.createServer({}, (req, res) => {
   const proxy = getProxy.random();
   proxy.web(req, res);
-})
+});
+
+// // REGISTER SERVICE
+// app.post("/register-service", (req, res) => {
+//   const { port } = req.body;
+//   const { hostname } = req;
+//   registerservice({host: hostname, port: 5002});
+//   res.json("Ok");
+// })  
+
+// // PROXY WEBSOCKET
+// app.get("*", (req, res) => {
+//   const proxy = getProxy.random();
+//   proxy.web(req, res);
+// })
 
 
-proxyServer.on("upgrade", (req, socket, head) => {
+server.on("upgrade", (req, socket, head) => {
   const proxy = getProxy.random();
   proxy.web(req, socket, head);
 
@@ -46,5 +48,5 @@ process.on("uncaughtException", (error) => {
 
 app.listen(PORT, () => console.log("Server is up"))
 
-proxyServer.listen(PORT);
+server.listen(PORT);
 // app.listen(PORT, () => console.log("Server started"))
