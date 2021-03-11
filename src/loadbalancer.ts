@@ -28,12 +28,15 @@ app.get("*", (req, res) => {
 })
 
 
-// proxyServer.on("upgrade", (req, socket, head) => {
-//   // target = getService.random();
-//   // proxy.ws(req, socket, head, {
-//   //   target,
-//   // });
-// });
+proxyServer.on("upgrade", (req, socket, head) => {
+  const proxy = getProxy.random();
+  proxy.web(req, socket, head);
+
+  proxy.on('error', function(err, req, socket) {
+    console.log("Socket upgrade error")
+    socket.end();
+  });
+});
 
 process.on("uncaughtException", (error) => {
     if ((error as any).code === "ECONNREFUSED") {
