@@ -18,8 +18,7 @@ export const getService = {
 };
 
 export const registerservice = (service: Service): void => {
-  console.log("Trying")
   if (services.find(s => JSON.stringify(s) === JSON.stringify(service))) return;
   services.push(service);
-  console.log(`Registered DriverService [${service}]`);
+  console.log(`Registered DriverService [${service.hostname}, ${service.port}]`);
 };
