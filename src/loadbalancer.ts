@@ -17,7 +17,7 @@ let target = {};
 app.post("/register-service", (req, res) => {
   const { port } = req.body;
   const { hostname } = req;
-  registerservice({host: hostname, port});
+  registerservice({host: hostname, port: 5002});
   res.json("Ok");
 })  
 
