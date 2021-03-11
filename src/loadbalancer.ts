@@ -1,6 +1,6 @@
 import * as express from "express";
 import * as http from "http";
-import * as httpProxy from "http-proxy";
+import * as httpProxy from "http-proxy";  
 import * as cors from "cors";
 import { getService, registerservice } from "./util/serviceRegistration";
 
@@ -17,12 +17,17 @@ let target = {};
 app.post("/register-service", (req, res) => {
   const { port } = req.body;
   const { hostname } = req;
-  registerservice({hostname, port});
+  registerservice({host: hostname, port});
   res.json("Ok");
+})  
+
+app.get("/", (req, res) => {
+  res.send("Root!")
 })
 
 app.get("*", (req, res) => {
-  proxy.web(req, res)
+  const target = getService.random();
+  proxy.web(req, res, {target})
 })
 
 proxyServer.on("upgrade", (req, socket, head) => {

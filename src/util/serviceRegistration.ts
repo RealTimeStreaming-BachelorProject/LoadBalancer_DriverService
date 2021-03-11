@@ -1,13 +1,13 @@
 interface Service {
-  hostname: string;
+  host: string;
   port: number;
 }
 
 export const services: Service[] = [
-  // {
-  //   hostname: "localhost",
-  //   port: 5002,
-  // },
+  {
+    host: "localhost",
+    port: 5002,
+  },
 ];
 
 export const getService = {
@@ -20,5 +20,5 @@ export const getService = {
 export const registerservice = (service: Service): void => {
   if (services.find(s => JSON.stringify(s) === JSON.stringify(service))) return;
   services.push(service);
-  console.log(`Registered DriverService [${service.hostname}, ${service.port}]`);
+  console.log(`Registered DriverService [${service.host}, ${service.port}]`);
 };
