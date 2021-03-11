@@ -4,10 +4,10 @@ interface Service {
 }
 
 export const services: Service[] = [
-  {
-    hostname: "localhost",
-    port: 5002,
-  },
+  // {
+  //   hostname: "localhost",
+  //   port: 5002,
+  // },
 ];
 
 export const getService = {
