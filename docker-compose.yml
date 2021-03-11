@@ -1,7 +1,19 @@
 version: '3.8'
 
 services:
+  # loadbalancer:
+  #   build: .
+  #   ports:
+  #     - 5010:5010
+  
   loadbalancer:
-    build: .
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
       - 5010:5010
+
+networks:
+  default:
+    external:
+      name: bachelor-local

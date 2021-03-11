@@ -8,6 +8,7 @@ import {
 } from "./util/serviceRegistration";
 
 const PORT = 5010;
+http.globalAgent.maxSockets = 10240;
 
 // const app = express();
 // app.use(cors());
@@ -17,13 +18,15 @@ const server = http.createServer((req, res) => {
   // Set CORS headers
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Request-Method", "*");
-  res.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET");
+  res.setHeader("Access-Control-Allow-Methods", "*");
   res.setHeader("Access-Control-Allow-Headers", "*");
-  if (req.method === "OPTIONS") {
-    res.writeHead(200);
-    res.end();
-    return;
+
+  console.log("Request")
+
+  if (req.url === "/register-service") {
+    console.log("Service registered");
   }
+
   const proxy = getProxy.random();
   proxy.web(req, res);
 });

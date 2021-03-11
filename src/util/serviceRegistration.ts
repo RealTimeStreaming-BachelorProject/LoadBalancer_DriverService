@@ -7,7 +7,7 @@ interface Service {
 
 export const services: Service[] = [
   {
-    host: "localhost",
+    host: "driverservice",
     port: 5002,
   },
 ];
@@ -15,8 +15,8 @@ export const services: Service[] = [
 export const proxies: any[] = [
   httpProxy.createProxyServer({
     target: {
-      host: "10.123.252.246",
-      port: 5001
+      host: "driverservice",
+      port: 5002
     },
     ws: true,
     xfwd: true,
