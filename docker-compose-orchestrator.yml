@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  orchestrator:
+    build: .
+    ports:
+      - 5010:5010
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 500M
+networks:
+  default:
+    external:
+      name: bachelor-local
